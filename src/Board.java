@@ -17,7 +17,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-
 public class Board {
 	private Cell[][] cells;
 	private JFrame frame;
@@ -30,9 +29,9 @@ public class Board {
 	Board(){
 		frame = new JFrame("Minesweeper");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		menu = this.Menu();
+		menu = Menu();
 		frame.add(menu);
-		//frame.pack();
+		frame.pack();
 		frame.setVisible(true);
 	}
 	public JPanel Menu(){
@@ -168,10 +167,16 @@ public class Board {
 					}
 					else if(temp.isEmpty() == true && temp.isFlagged() == false){
 						scanForEmptyCells(temp);
+						if(nonMines == 0){
+							win();
+						}
 					}
 					else if(temp.isFlagged() == false){
 						temp.reveal();
 						nonMines--;
+						if(nonMines == 0){
+							win();
+						}
 					}
 				}
 			}
@@ -184,6 +189,7 @@ public class Board {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			frame.remove(menu);
+			SwingUtilities.updateComponentTreeUI(frame);
 			numMines = 9;
 			side = 10;
 			frame.add(addCells(10));
@@ -225,6 +231,6 @@ public class Board {
 		
 	}
 	public void win(){
-		
+		this.revealBoard();
 	}
 }
